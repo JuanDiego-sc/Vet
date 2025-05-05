@@ -12,4 +12,9 @@ public class Medicine
     public required string Description { get; set; }
     public required DateTime CreateAt { get; set; }
     public required DateTime UpdateAt { get; set; }
+
+    #region Relationships 
+    public ICollection<Treatment> Treatments { get; set; } = [];
+
+    #endregion
 }

@@ -16,4 +16,9 @@ public class Pet
     public required DateTime CreateAt { get; set; }
     public required DateTime UpdateAt { get; set; }
 
+    #region Relationships
+    public ICollection<MedicalAppointment> MedicalAppointments { get; set; } = [];
+    
+    #endregion
+
 }

@@ -3,20 +3,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain;
 
-public class Disease
+public class MedicalAppointment
 {
     [Key]
-    public string Id { get; set; } = Guid.NewGuid().ToString();
-    public required string Name { get; set; }
-    public required string Type { get; set; }
-    public required string Description { get; set; }
+    public string Id { get; set; } = new Guid().ToString();
+    public DateTime AppointmentDate {get; set;}
+    public required Status AppointmentStatus {get; set;}
+    public required string Reason {get; set;}
     public required DateTime CreateAt { get; set; }
     public required DateTime UpdateAt { get; set; }
 
-    
     #region Relationships 
+
+    public string? IdPet {get; set;}
+    public Pet Pet {get; set;} = null!;
     public ICollection<AppointmentDetail> AppointmentDetails { get; set; } = [];
 
     #endregion
 }
-
