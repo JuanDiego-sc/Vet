@@ -6,7 +6,7 @@ namespace Domain;
 public class MedicalAppointment
 {
     [Key]
-    public string Id { get; set; } = new Guid().ToString();
+    public string Id { get; set; } = Guid.NewGuid().ToString();
     public DateTime AppointmentDate {get; set;}
     public required Status AppointmentStatus {get; set;}
     public required string Reason {get; set;}
@@ -16,8 +16,8 @@ public class MedicalAppointment
     #region Relationships 
 
     public string? IdPet {get; set;}
-    public Pet Pet {get; set;} = null!;
-    public ICollection<AppointmentDetail> AppointmentDetails { get; set; } = [];
+    public Pet? Pet {get; set;} = null!;
+    public ICollection<AppointmentDetail>? AppointmentDetails { get; set; } = [];
 
     #endregion
 }

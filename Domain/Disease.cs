@@ -15,7 +15,7 @@ public class Disease
 
     
     #region Relationships 
-    public ICollection<AppointmentDetail> AppointmentDetails { get; set; } = [];
+    public ICollection<AppointmentDetail>? AppointmentDetails { get; set; } = [];
 
     #endregion
 }

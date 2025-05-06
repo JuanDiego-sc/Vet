@@ -14,7 +14,7 @@ public class Medicine
     public required DateTime UpdateAt { get; set; }
 
     #region Relationships 
-    public ICollection<Treatment> Treatments { get; set; } = [];
+    public ICollection<Treatment>? Treatments { get; set; } = [];
 
     #endregion
 }
