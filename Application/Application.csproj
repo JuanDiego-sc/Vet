@@ -16,22 +16,4 @@
     <PackageReference Include="MediatR" Version="12.5.0" />
   </ItemGroup>
 
-   <ItemGroup>
-     <Folder Include="Diseases\" />
-     <Folder Include="Diseases\Commands\" />
-     <Folder Include="Diseases\Queries\" />
-     <Folder Include="MedicalAppointments\" />
-     <Folder Include="MedicalAppointments\Commands\" />
-     <Folder Include="MedicalAppointments\Queries\" />
-     <Folder Include="Medicines\" />
-     <Folder Include="Medicines\Commands\" />
-     <Folder Include="Medicines\Queries\" />
-     <Folder Include="Pets\" />
-     <Folder Include="Pets\Commands\" />
-     <Folder Include="Pets\Queries\" />
-     <Folder Include="Treatments\" />
-     <Folder Include="Treatments\Commands\" />
-     <Folder Include="Treatments\Queries\" />
-   </ItemGroup>
-
 </Project>

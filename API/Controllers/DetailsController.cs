@@ -14,32 +14,32 @@ public class DetailsController(AppDbContext context) : BaseApiController
 
     [HttpGet]	
     //Good practice to use async/await for database queries
-    public async Task<ActionResult<List<AppointmentDetail>>> GetActivities()
+    public async Task<ActionResult<List<AppointmentDetail>>> GetDetailList()
     {
         return await Mediator.Send(new GetDetailList.Query());
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<AppointmentDetail>> GetActivityDetail(string id)
+    public async Task<ActionResult<AppointmentDetail>> GetDetail(string id)
     {
         return await Mediator.Send(new GetDetail.Query { Id = id });
     }
 
     [HttpPost]
-    public async Task<ActionResult<string>> CreateActivity(AppointmentDetail detail)
+    public async Task<ActionResult<string>> CreateDetail(AppointmentDetail detail)
     {
         return await Mediator.Send(new CreateDetail.Command { AppointmentDetail = detail });
     }
 
     [HttpPut]
-    public async Task<ActionResult> EditActivity(AppointmentDetail detail)
+    public async Task<ActionResult> EditDetail(AppointmentDetail detail)
     {
        await Mediator.Send(new EditDetail.Command { AppointmentDetail = detail });
        return NoContent ();
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteActivity(string id)
+    public async Task<ActionResult> DeleteDetail(string id)
     {
         await Mediator.Send(new DeleteDetail.Command { Id = id });
         return Ok();
