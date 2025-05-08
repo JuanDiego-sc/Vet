@@ -15,7 +15,7 @@ public class EditMedicine
     {
         public async Task Handle(Command request, CancellationToken cancellationToken)
         {
-            var detail = await context.Diseases
+            var detail = await context.Medicines
                 .FindAsync([request.Medicine.Id], cancellationToken) 
              ?? 
             throw new Exception("Appointment not found");

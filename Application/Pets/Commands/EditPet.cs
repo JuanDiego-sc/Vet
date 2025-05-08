@@ -15,7 +15,7 @@ public class EditPet
     {
         public async Task Handle(Command request, CancellationToken cancellationToken)
         {
-            var pet = await context.Diseases
+            var pet = await context.Pets
                 .FindAsync([request.Pet.Id], cancellationToken) 
              ?? 
             throw new Exception("Pet not found");
