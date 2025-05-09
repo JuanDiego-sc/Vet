@@ -16,6 +16,10 @@ public class CreatePet
     {
         public async Task<string> Handle(Command request, CancellationToken cancellationToken)
         {
+            if (request.Pet.Birthdate.Kind != DateTimeKind.Utc)
+            {
+                request.Pet.Birthdate = DateTime.SpecifyKind(request.Pet.Birthdate, DateTimeKind.Utc);
+            } 
            context.Pets.Add(request.Pet);
            await context.SaveChangesAsync(cancellationToken);
            return request.Pet.Id;

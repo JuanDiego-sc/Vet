@@ -15,7 +15,7 @@ public class CreateMedicine
     public class Handler(AppDbContext context) : IRequestHandler<Command, string>
     {
         public async Task<string> Handle(Command request, CancellationToken cancellationToken)
-        {
+        { 
            context.Medicines.Add(request.Medicine);
            await context.SaveChangesAsync(cancellationToken);
            return request.Medicine.Id;
