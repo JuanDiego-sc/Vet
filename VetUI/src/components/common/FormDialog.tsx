@@ -19,7 +19,7 @@ interface FormField {
   label: string;
   type?: string;
   validation: (value: string) => string;
-  options?: { value: string; label: string }[];
+  options?: { value: string | number; label: string }[];
 }
 
 interface FormDialogProps<T extends Record<string, string | number>> {

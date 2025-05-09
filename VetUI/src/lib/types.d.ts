@@ -28,3 +28,13 @@ export type Disease ={
     updateAt: string
 }
 
+export type MedicalAppointment = {
+    id: string
+    appointmentDate: string
+    appointmentStatus: number
+    reason: string
+    createAt: string
+    updateAt: string
+    idPet: string
+}
+

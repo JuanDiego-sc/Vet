@@ -27,6 +27,9 @@ export default function NavBar() {
                         <MenuItemLink  to={"/disease"}>
                             Diseases
                         </MenuItemLink>
+                        <MenuItemLink  to={"/appointment"}>
+                            Appointments
+                        </MenuItemLink>
                     </Box>
                 </Toolbar>
             </Container>
