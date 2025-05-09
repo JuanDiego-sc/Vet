@@ -12,75 +12,65 @@ import {
   Box,
   CircularProgress,
 } from '@mui/material';
-import { usePets } from '../../../lib/hooks/usePets';
-import { Pet } from '../../../lib/types';
+import { useDiseases } from '../../../lib/hooks/useDiseases';
+import { Disease } from '../../../lib/types';
 import { FormDialog } from '../../../components/common/FormDialog';
 import { validations } from '../../../lib/utils/validations';
 
-export const PetsTable = () => {
-  const { pets, isPending, createPet, updatePet, deletePet } = usePets();
+export const DiseasesTable = () => {
+  const { diseases, isPending, createDisease, updateDisease, deleteDisease } = useDiseases();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedPet, setSelectedPet] = useState<Pet | null>(null);
+  const [selectedDisease, setSelectedDisease] = useState<Disease | null>(null);
 
   const initialFormData = {
-    petName: '',
-    breed: '',
-    species: '',
-    gender: '',
-    birthdate: '',
+    name: '',
+    type: '',
+    description: '',
   };
 
   const formFields = [
     {
-      name: 'petName',
+      name: 'name',
       label: 'Nombre',
       validation: validations.name,
     },
     {
-      name: 'breed',
-      label: 'Raza',
-      validation: validations.name,
-    },
-    {
-      name: 'species',
-      label: 'Especie',
-      validation: validations.name,
-    },
-    {
-      name: 'gender',
-      label: 'Género',
+      name: 'type',
+      label: 'Tipo',
       validation: validations.name,
       options: [
-        { value: 'Macho', label: 'Macho' },
-        { value: 'Hembra', label: 'Hembra' }
+        { value: 'Viral', label: 'Viral' },
+        { value: 'Bacteriana', label: 'Bacteriana' },
+        { value: 'Fúngica', label: 'Fúngica' },
+        { value: 'Parasitaria', label: 'Parasitaria' },
+        { value: 'Otra', label: 'Otra' }
       ]
     },
     {
-      name: 'birthdate',
-      label: 'Fecha de Nacimiento',
-      type: 'date',
-      validation: validations.date,
+      name: 'description',
+      label: 'Descripción',
+      validation: validations.description,
     },
   ];
 
-  const handleSubmit = async (formData: Partial<Pet>) => {
-    if (selectedPet) {
-      await updatePet.mutateAsync({ ...selectedPet, ...formData });
+  const handleSubmit = async (formData: Partial<Disease>) => {
+    if (selectedDisease) {
+      await updateDisease.mutateAsync({ ...selectedDisease, ...formData });
     } else {
-      await createPet.mutateAsync(formData as Pet);
+      await createDisease.mutateAsync(formData as Disease);
     }
     setIsOpen(false);
-    setSelectedPet(null);
+    setSelectedDisease(null);
   };
 
-  const handleEdit = (pet: Pet) => {
-    setSelectedPet(pet);
+  const handleEdit = (disease: Disease) => {
+    setSelectedDisease(disease);
     setIsOpen(true);
   };
 
   const handleDelete = async (id: string) => {
-    if (window.confirm('¿Está seguro de eliminar esta mascota?')) {
-      await deletePet.mutateAsync(id);
+    if (window.confirm('¿Está seguro de eliminar esta enfermedad?')) {
+      await deleteDisease.mutateAsync(id);
     }
   };
 
@@ -92,23 +82,23 @@ export const PetsTable = () => {
     );
   }
 
-  const petsList = Array.isArray(pets) ? pets : [];
+  const diseasesList = Array.isArray(diseases) ? diseases : [];
 
   return (
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4" component="h2">
-          Mascotas
+          Enfermedades
         </Typography>
         <Button
           variant="contained"
           color="primary"
           onClick={() => {
-            setSelectedPet(null);
+            setSelectedDisease(null);
             setIsOpen(true);
           }}
         >
-          Agregar Mascota
+          Agregar Enfermedad
         </Button>
       </Box>
 
@@ -116,13 +106,13 @@ export const PetsTable = () => {
         open={isOpen}
         onClose={() => {
           setIsOpen(false);
-          setSelectedPet(null);
+          setSelectedDisease(null);
         }}
         onSubmit={handleSubmit}
-        title={selectedPet ? 'Editar Mascota' : 'Nueva Mascota'}
+        title={selectedDisease ? 'Editar Enfermedad' : 'Nueva Enfermedad'}
         fields={formFields}
-        initialData={selectedPet || initialFormData}
-        submitButtonText={selectedPet ? 'Actualizar' : 'Crear'}
+        initialData={selectedDisease || initialFormData}
+        submitButtonText={selectedDisease ? 'Actualizar' : 'Crear'}
       />
 
       <TableContainer component={Paper}>
@@ -130,27 +120,23 @@ export const PetsTable = () => {
           <TableHead>
             <TableRow>
               <TableCell>Nombre</TableCell>
-              <TableCell>Raza</TableCell>
-              <TableCell>Especie</TableCell>
-              <TableCell>Género</TableCell>
-              <TableCell>Fecha de Nacimiento</TableCell>
+              <TableCell>Tipo</TableCell>
+              <TableCell>Descripción</TableCell>
               <TableCell>Acciones</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {petsList.map((pet) => (
-              <TableRow key={pet.id}>
-                <TableCell>{pet.petName}</TableCell>
-                <TableCell>{pet.breed}</TableCell>
-                <TableCell>{pet.species}</TableCell>
-                <TableCell>{pet.gender}</TableCell>
-                <TableCell>{new Date(pet.birthdate).toLocaleDateString()}</TableCell>
+            {diseasesList.map((disease) => (
+              <TableRow key={disease.id}>
+                <TableCell>{disease.name}</TableCell>
+                <TableCell>{disease.type}</TableCell>
+                <TableCell>{disease.description}</TableCell>
                 <TableCell>
                   <Box sx={{ display: 'flex', gap: 1 }}>
                     <Button
                       variant="outlined"
                       size="small"
-                      onClick={() => handleEdit(pet)}
+                      onClick={() => handleEdit(disease)}
                     >
                       Editar
                     </Button>
@@ -158,7 +144,7 @@ export const PetsTable = () => {
                       variant="outlined"
                       color="error"
                       size="small"
-                      onClick={() => handleDelete(pet.id)}
+                      onClick={() => handleDelete(disease.id)}
                     >
                       Eliminar
                     </Button>

@@ -12,75 +12,59 @@ import {
   Box,
   CircularProgress,
 } from '@mui/material';
-import { usePets } from '../../../lib/hooks/usePets';
-import { Pet } from '../../../lib/types';
+import { useMedicines } from '../../../lib/hooks/useMedicines';
+import { Medicine } from '../../../lib/types';
 import { FormDialog } from '../../../components/common/FormDialog';
 import { validations } from '../../../lib/utils/validations';
 
-export const PetsTable = () => {
-  const { pets, isPending, createPet, updatePet, deletePet } = usePets();
+export const MedicinesTable = () => {
+  const { medicines, isPending, createMedicine, updateMedicine, deleteMedicine } = useMedicines();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedPet, setSelectedPet] = useState<Pet | null>(null);
+  const [selectedMedicine, setSelectedMedicine] = useState<Medicine | null>(null);
 
   const initialFormData = {
-    petName: '',
-    breed: '',
-    species: '',
-    gender: '',
-    birthdate: '',
+    name: '',
+    stock: 0,
+    description: '',
   };
 
   const formFields = [
     {
-      name: 'petName',
+      name: 'name',
       label: 'Nombre',
       validation: validations.name,
     },
     {
-      name: 'breed',
-      label: 'Raza',
-      validation: validations.name,
+      name: 'stock',
+      label: 'Stock',
+      type: 'number',
+      validation: validations.positiveNumber,
     },
     {
-      name: 'species',
-      label: 'Especie',
-      validation: validations.name,
-    },
-    {
-      name: 'gender',
-      label: 'Género',
-      validation: validations.name,
-      options: [
-        { value: 'Macho', label: 'Macho' },
-        { value: 'Hembra', label: 'Hembra' }
-      ]
-    },
-    {
-      name: 'birthdate',
-      label: 'Fecha de Nacimiento',
-      type: 'date',
-      validation: validations.date,
+      name: 'description',
+      label: 'Descripción',
+      validation: validations.description,
     },
   ];
 
-  const handleSubmit = async (formData: Partial<Pet>) => {
-    if (selectedPet) {
-      await updatePet.mutateAsync({ ...selectedPet, ...formData });
+  const handleSubmit = async (formData: Partial<Medicine>) => {
+    if (selectedMedicine) {
+      await updateMedicine.mutateAsync({ ...selectedMedicine, ...formData });
     } else {
-      await createPet.mutateAsync(formData as Pet);
+      await createMedicine.mutateAsync(formData as Medicine);
     }
     setIsOpen(false);
-    setSelectedPet(null);
+    setSelectedMedicine(null);
   };
 
-  const handleEdit = (pet: Pet) => {
-    setSelectedPet(pet);
+  const handleEdit = (medicine: Medicine) => {
+    setSelectedMedicine(medicine);
     setIsOpen(true);
   };
 
   const handleDelete = async (id: string) => {
-    if (window.confirm('¿Está seguro de eliminar esta mascota?')) {
-      await deletePet.mutateAsync(id);
+    if (window.confirm('¿Está seguro de eliminar este medicamento?')) {
+      await deleteMedicine.mutateAsync(id);
     }
   };
 
@@ -92,23 +76,23 @@ export const PetsTable = () => {
     );
   }
 
-  const petsList = Array.isArray(pets) ? pets : [];
+  const medicinesList = Array.isArray(medicines) ? medicines : [];
 
   return (
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4" component="h2">
-          Mascotas
+          Medicamentos
         </Typography>
         <Button
           variant="contained"
           color="primary"
           onClick={() => {
-            setSelectedPet(null);
+            setSelectedMedicine(null);
             setIsOpen(true);
           }}
         >
-          Agregar Mascota
+          Agregar Medicamento
         </Button>
       </Box>
 
@@ -116,13 +100,13 @@ export const PetsTable = () => {
         open={isOpen}
         onClose={() => {
           setIsOpen(false);
-          setSelectedPet(null);
+          setSelectedMedicine(null);
         }}
         onSubmit={handleSubmit}
-        title={selectedPet ? 'Editar Mascota' : 'Nueva Mascota'}
+        title={selectedMedicine ? 'Editar Medicamento' : 'Nuevo Medicamento'}
         fields={formFields}
-        initialData={selectedPet || initialFormData}
-        submitButtonText={selectedPet ? 'Actualizar' : 'Crear'}
+        initialData={selectedMedicine || initialFormData}
+        submitButtonText={selectedMedicine ? 'Actualizar' : 'Crear'}
       />
 
       <TableContainer component={Paper}>
@@ -130,27 +114,23 @@ export const PetsTable = () => {
           <TableHead>
             <TableRow>
               <TableCell>Nombre</TableCell>
-              <TableCell>Raza</TableCell>
-              <TableCell>Especie</TableCell>
-              <TableCell>Género</TableCell>
-              <TableCell>Fecha de Nacimiento</TableCell>
+              <TableCell>Stock</TableCell>
+              <TableCell>Descripción</TableCell>
               <TableCell>Acciones</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {petsList.map((pet) => (
-              <TableRow key={pet.id}>
-                <TableCell>{pet.petName}</TableCell>
-                <TableCell>{pet.breed}</TableCell>
-                <TableCell>{pet.species}</TableCell>
-                <TableCell>{pet.gender}</TableCell>
-                <TableCell>{new Date(pet.birthdate).toLocaleDateString()}</TableCell>
+            {medicinesList.map((medicine) => (
+              <TableRow key={medicine.id}>
+                <TableCell>{medicine.name}</TableCell>
+                <TableCell>{medicine.stock}</TableCell>
+                <TableCell>{medicine.description}</TableCell>
                 <TableCell>
                   <Box sx={{ display: 'flex', gap: 1 }}>
                     <Button
                       variant="outlined"
                       size="small"
-                      onClick={() => handleEdit(pet)}
+                      onClick={() => handleEdit(medicine)}
                     >
                       Editar
                     </Button>
@@ -158,7 +138,7 @@ export const PetsTable = () => {
                       variant="outlined"
                       color="error"
                       size="small"
-                      onClick={() => handleDelete(pet.id)}
+                      onClick={() => handleDelete(medicine.id)}
                     >
                       Eliminar
                     </Button>

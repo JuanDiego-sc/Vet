@@ -21,10 +21,10 @@ export default function NavBar() {
                         <MenuItemLink  to='/pet'>
                             Pets
                         </MenuItemLink>
-                        <MenuItemLink  to={"#"}>
+                        <MenuItemLink  to={"/medicine"}>
                             Medicine
                         </MenuItemLink>
-                        <MenuItemLink  to={"#"}>
+                        <MenuItemLink  to={"/disease"}>
                             Diseases
                         </MenuItemLink>
                     </Box>
