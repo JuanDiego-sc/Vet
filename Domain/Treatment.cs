@@ -13,8 +13,8 @@ public class Treatment
     public required string Dose {get; set;}
     [SpecialCharactersValidation]
     public required string Contraindications {get; set;}
-    public required DateTime CreateAt { get; set; }
-    public required DateTime UpdateAt { get; set; }
+    public DateTime CreateAt { get; set; } = DateTime.UtcNow;
+    public  DateTime UpdateAt { get; set; } = DateTime.UtcNow;
 
     #region Relationships 
 

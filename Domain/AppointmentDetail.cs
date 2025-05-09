@@ -12,8 +12,8 @@ public class AppointmentDetail
     public required string Diagnostic {get; set;}
     [SpecialCharactersValidation]
     public required string Observation {get; set;}
-    public required DateTime CreateAt { get; set; }
-    public required DateTime UpdateAt { get; set; }
+    public DateTime CreateAt { get; set; } = DateTime.UtcNow;
+    public  DateTime UpdateAt { get; set; } = DateTime.UtcNow;
 
     #region Relationships 
 

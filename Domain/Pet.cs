@@ -22,8 +22,8 @@ public class Pet
     public required string Gender { get; set; }
 
     public DateTime Birthdate { get; set; }
-    public required DateTime CreateAt { get; set; }
-    public required DateTime UpdateAt { get; set; }
+    public DateTime CreateAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdateAt { get; set; } = DateTime.UtcNow;
 
     #region Relationships
     public ICollection<MedicalAppointment>? MedicalAppointments { get; set; } = [];

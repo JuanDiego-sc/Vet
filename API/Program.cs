@@ -24,6 +24,11 @@ builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
 var app = builder.Build();
 
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .WithOrigins("http://localhost:3003", "https://localhost:3003"));
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -43,11 +48,6 @@ catch (Exception ex)
     var logger = services.GetRequiredService<ILogger<Program>>();
     logger.LogError(ex, "An error occurred during migration and seeding data");
 }
-
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
 
 app.MapControllers();
 

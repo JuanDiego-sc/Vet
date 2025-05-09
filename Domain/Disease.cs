@@ -15,8 +15,8 @@ public class Disease
     public required string Type { get; set; }
     [SpecialCharactersValidation]
     public required string Description { get; set; }
-    public required DateTime CreateAt { get; set; }
-    public required DateTime UpdateAt { get; set; }
+    public  DateTime CreateAt { get; set; } = DateTime.UtcNow;
+    public  DateTime UpdateAt { get; set; } = DateTime.UtcNow;
 
     
     #region Relationships 

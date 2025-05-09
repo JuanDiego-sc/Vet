@@ -12,8 +12,8 @@ public class MedicalAppointment
     public required Status AppointmentStatus {get; set;}
     [SpecialCharactersValidation]
     public required string Reason {get; set;}
-    public required DateTime CreateAt { get; set; }
-    public required DateTime UpdateAt { get; set; }
+    public  DateTime CreateAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdateAt { get; set; } = DateTime.UtcNow;
 
     #region Relationships 
 
