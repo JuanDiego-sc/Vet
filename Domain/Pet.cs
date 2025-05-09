@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-
+using Domain.Validations;
 
 namespace Domain;
 
@@ -8,10 +8,19 @@ public class Pet
 {
     [Key]
     public string Id { get; set; } = Guid.NewGuid().ToString();
+
+    [SpecialCharactersValidation]
     public required string PetName { get; set; }
+
+    [SpecialCharactersValidation]
     public required string Breed { get; set; }
+
+    [SpecialCharactersValidation]
     public required string Species { get; set; }
+
+    [SpecialCharactersValidation]
     public required string Gender { get; set; }
+
     public DateTime Birthdate { get; set; }
     public required DateTime CreateAt { get; set; }
     public required DateTime UpdateAt { get; set; }

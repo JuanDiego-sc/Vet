@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Domain.Validations;
 
 namespace Domain;
 
@@ -9,6 +10,7 @@ public class MedicalAppointment
     public string Id { get; set; } = Guid.NewGuid().ToString();
     public DateTime AppointmentDate {get; set;}
     public required Status AppointmentStatus {get; set;}
+    [SpecialCharactersValidation]
     public required string Reason {get; set;}
     public required DateTime CreateAt { get; set; }
     public required DateTime UpdateAt { get; set; }
