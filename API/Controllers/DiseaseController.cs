@@ -1,6 +1,7 @@
 using Application.AppointmentDetails.Queries;
 using Application.Diseases.Commands;
 using Application.Diseases.Queries;
+using Application.DTOs;
 using Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,14 +15,14 @@ namespace API.Controllers
 
         [HttpGet]	
         //Good practice to use async/await for database queries
-        public async Task<ActionResult<List<Disease>>> GetDiseases()
+        public async Task<ActionResult<List<DiseaseDto>>> GetDiseases()
         {
             return await Mediator.Send(new GetDiseaseList.Query());
         }
 
 
         [HttpGet("{id}")]	
-        public async Task<ActionResult<Disease>> GetDisease(string id)
+        public async Task<ActionResult<DiseaseDto>> GetDisease(string id)
         {
             return await Mediator.Send(new GetDisease.Query {Id = id});
         }

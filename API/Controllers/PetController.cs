@@ -1,3 +1,4 @@
+using Application.DTOs;
 using Application.Pets.Commands;
 using Application.Pets.Queries;
 using Domain;
@@ -11,13 +12,13 @@ namespace API.Controllers
     {
         private readonly AppDbContext context = context;
 
-         public async Task<ActionResult<List<Pet>>> GetPetList()
+         public async Task<ActionResult<List<PetDto>>> GetPetList()
         {
             return await Mediator.Send(new GetPetList.Query());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Pet>> GetPet(string id)
+        public async Task<ActionResult<PetDto>> GetPet(string id)
         {
             return await Mediator.Send(new GetPet.Query { Id = id });
         }

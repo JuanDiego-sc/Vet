@@ -1,4 +1,7 @@
 using System;
+using Application.DTOs;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,13 +11,15 @@ namespace Application.Diseases.Queries;
 
 public class GetDiseaseList
 {
-    public class Query : IRequest<List<Disease>>{}
+    public class Query : IRequest<List<DiseaseDto>>{}
 
-    public class Handler(AppDbContext context) : IRequestHandler<Query, List<Disease>>
+    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Query, List<DiseaseDto>>
     {
-        public async Task<List<Disease>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<List<DiseaseDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            return await context.Diseases.ToListAsync(cancellationToken);
+            return await context.Diseases
+            .ProjectTo<DiseaseDto>(mapper.ConfigurationProvider)
+            .ToListAsync(cancellationToken);
         }
     }
 }

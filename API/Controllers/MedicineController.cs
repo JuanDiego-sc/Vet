@@ -1,3 +1,4 @@
+using Application.DTOs;
 using Application.Medicines.Commands;
 using Application.Medicines.Queries;
 using Domain;
@@ -11,15 +12,16 @@ namespace API.Controllers
     {
         private readonly AppDbContext context = context;
 
+
         [HttpGet]	
         //Good practice to use async/await for database queries
-        public async Task<ActionResult<List<Medicine>>> GetMedicineList()
+        public async Task<ActionResult<List<MedicineDto>>> GetMedicineList()
         {
             return await Mediator.Send(new GetMedicineList.Query());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Medicine>> GetMedicine(string id)
+        public async Task<ActionResult<MedicineDto>> GetMedicine(string id)
         {
             return await Mediator.Send(new GetMedicine.Query { Id = id });
         }

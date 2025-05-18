@@ -1,3 +1,4 @@
+using Application.DTOs;
 using Application.MedicalAppointments.Commands;
 using Application.MedicalAppointments.Queries;
 using Domain;
@@ -13,13 +14,13 @@ namespace API.Controllers
 
         [HttpGet]	
         //Good practice to use async/await for database queries
-        public async Task<ActionResult<List<MedicalAppointment>>> GetAppointmentList()
+        public async Task<ActionResult<List<MedicalAppointmentDto>>> GetAppointmentList()
         {
             return await Mediator.Send(new GetAppointmentList.Query());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<MedicalAppointment>> GetAppointment(string id)
+        public async Task<ActionResult<MedicalAppointmentDto>> GetAppointment(string id)
         {
             return await Mediator.Send(new GetAppointment.Query { Id = id });
         }

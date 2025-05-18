@@ -14,13 +14,13 @@ public class DetailsController(AppDbContext context) : BaseApiController
 
     [HttpGet]	
     //Good practice to use async/await for database queries
-    public async Task<ActionResult<List<AppointmentDetail>>> GetDetailList()
+    public async Task<ActionResult<List<AppointmentDetailDto>>> GetDetailList()
     {
         return await Mediator.Send(new GetDetailList.Query());
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<AppointmentDetail>> GetDetail(string id)
+    public async Task<ActionResult<AppointmentDetailDto>> GetDetail(string id)
     {
         return await Mediator.Send(new GetDetail.Query { Id = id });
     }

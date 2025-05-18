@@ -4,13 +4,13 @@ namespace Application.DTOs;
 
 public class TreatmentDto
 {
-    public required string Id { get; set; }
-    public required int Duration {get; set;}
-    public required string Dose {get; set;}
-    public required string Contraindications {get; set;}
-    public required string IdMedicine { get; set; } 
-    public MedicineDto Medicine {get; set;} = null!;
-    public required string IdAppointmentDetail { get; set; } 
-    public AppointmentDetailDto AppointmentDetail {get; set;} = null!;
+    public string? Id { get; set; }
+    public int? Duration {get; set;}
+    public string? Dose {get; set;}
+    public string? Contraindications {get; set;}
+    public string? IdMedicine { get; set; } 
+    public string? MedicineName {get; set;}
+    public  string? IdDetail { get; set; } 
+    public AppointmentDetailDto? AppointmentDetail {get; set;} = null!;
 
 }

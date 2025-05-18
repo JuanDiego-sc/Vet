@@ -1,3 +1,4 @@
+using Application.DTOs;
 using Application.Treatments.Commands;
 using Application.Treatments.Queries;
 using Domain;
@@ -11,13 +12,13 @@ namespace API.Controllers
     {
         private readonly AppDbContext context = context;
 
-         public async Task<ActionResult<List<Treatment>>> GetTreatmentList()
+         public async Task<ActionResult<List<TreatmentDto>>> GetTreatmentList()
         {
             return await Mediator.Send(new GetTreatmentList.Query());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Treatment>> GetTreatment(string id)
+        public async Task<ActionResult<TreatmentDto>> GetTreatment(string id)
         {
             return await Mediator.Send(new GetTreatment.Query { Id = id });
         }

@@ -1,4 +1,7 @@
 using System;
+using Application.DTOs;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,12 +11,18 @@ namespace Application.AppointmentDetails.Queries;
 
 public class GetDetailList
 {
-    public class Query : IRequest<List<AppointmentDetail>>{}
+    public class Query : IRequest<List<AppointmentDetailDto>>{}
 
-    public class Handler(AppDbContext context) : IRequestHandler<Query, List<AppointmentDetail>>{
-        public async Task<List<AppointmentDetail>> Handle(Query request, CancellationToken cancellationToken){
+    public class Handler(AppDbContext context, IMapper mapper ) : IRequestHandler<Query, List<AppointmentDetailDto>>{
+        public async Task<List<AppointmentDetailDto>> Handle(Query request, CancellationToken cancellationToken){
 
-            return await context.AppointmentDetails.ToListAsync(cancellationToken);
+            return await context.AppointmentDetails
+            .Include(d => d.Disease)
+            .Include(d => d.MedicalAppointment)
+            .Include(d => d.Treatments)
+                .ThenInclude(t => t.Medicine)
+            .ProjectTo<AppointmentDetailDto>(mapper.ConfigurationProvider)
+            .ToListAsync(cancellationToken);
             
         }
     }
