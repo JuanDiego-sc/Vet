@@ -14,16 +14,10 @@ namespace Application.DiseaseAnalysis.Queries
             public DateTime EndDate { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, List<DiseaseAnalysisDto>>
+        public class Handler(AppDbContext _context, IMapper _mapper) : IRequestHandler<Query, List<DiseaseAnalysisDto>>
         {
-            private readonly AppDbContext _context;
-            private readonly IMapper _mapper;
-
-            public Handler(AppDbContext context, IMapper mapper)
-            {
-                _context = context;
-                _mapper = mapper;
-            }
+            private readonly AppDbContext _context = _context;
+            private readonly IMapper _mapper = _mapper;
 
             public async Task<List<DiseaseAnalysisDto>> Handle(Query request, CancellationToken cancellationToken)
             {
