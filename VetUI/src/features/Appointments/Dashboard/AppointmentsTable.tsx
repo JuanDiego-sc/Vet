@@ -14,56 +14,21 @@ import {
 } from '@mui/material';
 import { useAppointments } from '../../../lib/hooks/useAppointments';
 import { usePets } from '../../../lib/hooks/usePets';
-import { MedicalAppointment } from '../../../lib/types';
-import { FormDialog } from '../../../components/common/FormDialog';
-import { validations } from '../../../lib/utils/validations';
+import { Detail, MedicalAppointment} from '../../../lib/types';
+import { AppointmentForm } from '../components/AppointmentForm';
+import { DetailForm } from '../components/DetailForm';
+import { useDiseases } from '../../../lib/hooks/useDiseases';
+import { useDetails } from '../../../lib/hooks/useDetails';
 
 export const AppointmentsTable = () => {
   const { appointments, isPending, createAppointment, updateAppointment, deleteAppointment } = useAppointments();
+  const { createDetail, updateDetail } = useDetails();
   const { pets } = usePets();
+  const { diseases } = useDiseases();
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenDetail, setIsOpenDetail] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState<MedicalAppointment | null>(null);
-
-  const initialFormData = {
-    appointmentDate: '',
-    appointmentStatus: 0,
-    reason: '',
-    idPet: '',
-  };
-
-  const formFields = [
-    {
-      name: 'idPet',
-      label: 'Mascota',
-      validation: validations.name,
-      options: pets?.map(pet => ({
-        value: pet.id,
-        label: pet.petName
-      })) || []
-    },
-    {
-      name: 'appointmentDate',
-      label: 'Fecha de Cita',
-      type: 'datetime-local',
-      validation: validations.date,
-    },
-    {
-      name: 'appointmentStatus',
-      label: 'Estado',
-      validation: validations.name,
-      options: [
-        { value: 0, label: 'Pendiente' },
-        { value: 1, label: 'Confirmada' },
-        { value: 2, label: 'Cancelada' },
-        { value: 3, label: 'Completada' }
-      ]
-    },
-    {
-      name: 'reason',
-      label: 'Motivo',
-      validation: validations.description,
-    },
-  ];
+  const [selectedDetail, setSelectedDetail] = useState<Detail | null>(null);
 
   const handleSubmit = async (formData: Partial<MedicalAppointment>) => {
     if (selectedAppointment) {
@@ -84,6 +49,21 @@ export const AppointmentsTable = () => {
     if (window.confirm('¿Está seguro de eliminar esta cita?')) {
       await deleteAppointment.mutateAsync(id);
     }
+  };
+
+  const handleSubmitDetail = async (formData: Partial<Detail>) => {
+    if (selectedDetail) {
+      await updateDetail.mutateAsync({ ...selectedDetail, ...formData });
+    } else {
+      await createDetail.mutateAsync(formData as Detail);
+    }
+    setIsOpenDetail(false);
+    setSelectedDetail(null);
+  };
+
+  const handleEditDetail = (appointment: MedicalAppointment) => {
+    setSelectedAppointment(appointment);
+    setIsOpenDetail(true);
   };
 
   const getStatusLabel = (status: number) => {
@@ -127,19 +107,27 @@ export const AppointmentsTable = () => {
         >
           Agregar Cita
         </Button>
-      </Box>
-
-      <FormDialog
+      </Box>      
+      <AppointmentForm
         open={isOpen}
         onClose={() => {
           setIsOpen(false);
           setSelectedAppointment(null);
         }}
         onSubmit={handleSubmit}
-        title={selectedAppointment ? 'Editar Cita' : 'Nueva Cita'}
-        fields={formFields}
-        initialData={selectedAppointment || initialFormData}
-        submitButtonText={selectedAppointment ? 'Actualizar' : 'Crear'}
+        pets={pets || []}
+        appointment={selectedAppointment}
+      />
+
+      <DetailForm
+        open={isOpenDetail}
+        onClose={() => {
+          setIsOpenDetail(false);
+          setSelectedAppointment(null);
+        }}
+        onSubmit={handleSubmitDetail}
+        diseases={diseases || []}
+        selectedAppointment={selectedAppointment}
       />
 
       <TableContainer component={Paper}>
@@ -168,6 +156,14 @@ export const AppointmentsTable = () => {
                       onClick={() => handleEdit(appointment)}
                     >
                       Editar
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color='success'
+                      onClick={() => handleEditDetail(appointment)}
+                    >
+                      Detalle
                     </Button>
                     <Button
                       variant="outlined"

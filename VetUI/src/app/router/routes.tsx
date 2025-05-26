@@ -5,6 +5,7 @@ import { PetsTable } from "../../features/Pets/Dashboard/PetsTable";
 import { MedicinesTable } from "../../features/Medicines/Dashboard/MedicinesTable";
 import { DiseasesTable } from "../../features/Diseases/Dashboard/DiseasesTable";
 import { AppointmentsTable } from "../../features/Appointments/Dashboard/AppointmentsTable";
+import { DetailTable } from "../../features/Details/Dashboard/DetailTable";
 
 export const router = createBrowserRouter([
     {
@@ -16,6 +17,7 @@ export const router = createBrowserRouter([
             {path: 'medicine', element: <MedicinesTable></MedicinesTable>},
             {path: 'disease', element: <DiseasesTable></DiseasesTable>},
             {path: 'appointment', element: <AppointmentsTable></AppointmentsTable>},
+            {path: 'detail', element: <DetailTable></DetailTable>},
         ]
     }
 ]);

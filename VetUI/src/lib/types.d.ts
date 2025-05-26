@@ -38,3 +38,19 @@ export type MedicalAppointment = {
     idPet: string
 }
 
+export type Treatment = {
+    id: string
+    duration: number
+    dose: string
+    contraindications: string
+    idMedicine: string
+    idDetail: string
+}
+
+export type Detail = {
+    id: string
+    diagnostic: string
+    observation: string
+    idDisease: string
+    idAppointment: string
+}

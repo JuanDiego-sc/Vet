@@ -30,6 +30,9 @@ export default function NavBar() {
                         <MenuItemLink  to={"/appointment"}>
                             Appointments
                         </MenuItemLink>
+                        <MenuItemLink  to={"/detail"}>
+                            Detalle de citas
+                        </MenuItemLink>
                     </Box>
                 </Toolbar>
             </Container>

@@ -16,6 +16,11 @@ public class CreateAppointment
     {
         public async Task<string> Handle(Command request, CancellationToken cancellationToken)
         {
+            if (request.MedicalAppointment.AppointmentDate.Kind != DateTimeKind.Utc)
+            {
+                request.MedicalAppointment.AppointmentDate = DateTime.SpecifyKind(request.MedicalAppointment.AppointmentDate, DateTimeKind.Utc);
+            }
+            
            context.MedicalAppointments.Add(request.MedicalAppointment);
            await context.SaveChangesAsync(cancellationToken);
            return request.MedicalAppointment.Id;
