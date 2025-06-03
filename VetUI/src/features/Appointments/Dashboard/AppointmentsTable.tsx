@@ -19,6 +19,7 @@ import { AppointmentForm } from '../components/AppointmentForm';
 import { DetailForm } from '../components/DetailForm';
 import { useDiseases } from '../../../lib/hooks/useDiseases';
 import { useDetails } from '../../../lib/hooks/useDetails';
+import AppointmentAnalyzer from '../components/AppointmentAnalyzer';
 
 export const AppointmentsTable = () => {
   const { appointments, isPending, createAppointment, updateAppointment, deleteAppointment } = useAppointments();
@@ -92,7 +93,8 @@ export const AppointmentsTable = () => {
   const appointmentsList = Array.isArray(appointments) ? appointments : [];
 
   return (
-    <Box sx={{ p: 3 }}>
+    <>
+      <Box sx={{ p: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4" component="h2">
           Citas Médicas
@@ -181,5 +183,9 @@ export const AppointmentsTable = () => {
         </Table>
       </TableContainer>
     </Box>
+
+    <AppointmentAnalyzer>
+    </AppointmentAnalyzer>
+    </>
   );
 }; 

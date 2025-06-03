@@ -54,3 +54,17 @@ export type Detail = {
     idDisease: string
     idAppointment: string
 }
+
+export type MedicalStockAlert = {
+  medicineName: string;
+  currentStock: number;
+  requiredStock: number;
+}
+
+export type AppointmentAnalyzer = {
+  diseaseName: string;
+  caseCount: number;
+  usedMedicines: string[];
+  hasStockIssues: boolean;
+  stockAlerts: MedicalStockAlert[]; 
+}

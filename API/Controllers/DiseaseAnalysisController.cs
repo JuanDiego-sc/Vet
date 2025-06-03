@@ -14,16 +14,16 @@ namespace API.Controllers
             [FromQuery] DateTime startDate,
             [FromQuery] DateTime endDate)
         {
-            try
-            {
-                var startDateUtc = startDate.Kind == DateTimeKind.Unspecified 
+            var startDateUtc = startDate.Kind == DateTimeKind.Unspecified 
                 ? DateTime.SpecifyKind(startDate, DateTimeKind.Utc) 
                 : startDate.ToUniversalTime();
                 
-                var endDateUtc = endDate.Kind == DateTimeKind.Unspecified 
+             var endDateUtc = endDate.Kind == DateTimeKind.Unspecified 
                 ? DateTime.SpecifyKind(endDate, DateTimeKind.Utc) 
                 : endDate.ToUniversalTime();
-
+                
+            try
+            {
                 var query = new GetDiseaseAnalysis.Query
                 {
                     StartDate = startDateUtc,
