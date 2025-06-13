@@ -1,4 +1,6 @@
 using System;
+using Application.DTOs;
+using AutoMapper;
 using Domain;
 using MediatR;
 using Persistence;
@@ -9,16 +11,17 @@ public class CreateTreatment
 {
      public class Command : IRequest<string>
     {
-         public required Treatment Treatment {get; set;}
+         public required TreatmentDto TreatmentDto{get; set;}
     }
 
-    public class Handler(AppDbContext context) : IRequestHandler<Command, string>
+    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command, string>
     {
         public async Task<string> Handle(Command request, CancellationToken cancellationToken)
         {
-           context.Treatments.Add(request.Treatment);
-           await context.SaveChangesAsync(cancellationToken);
-           return request.Treatment.Id;
+            var treatment = mapper.Map<Treatment>(request.TreatmentDto);
+            context.Treatments.Add(treatment);
+            await context.SaveChangesAsync(cancellationToken);
+            return treatment.Id;
         }
     }
 }

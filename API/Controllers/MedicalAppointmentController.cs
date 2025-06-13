@@ -26,15 +26,15 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<string>> CreateAppointment(MedicalAppointment appointment)
+        public async Task<ActionResult<string>> CreateAppointment(MedicalAppointmentDto appointment)
         {
-            return await Mediator.Send(new CreateAppointment.Command { MedicalAppointment = appointment });
+            return await Mediator.Send(new CreateAppointment.Command { MedicalAppointmentDto = appointment });
         }
 
         [HttpPut]
-        public async Task<ActionResult> EditAppointment(MedicalAppointment appointment)
+        public async Task<ActionResult> EditAppointment(MedicalAppointmentDto appointment)
         {
-        await Mediator.Send(new EditAppointment.Command { MedicalAppointment = appointment });
+        await Mediator.Send(new EditAppointment.Command { MedicalAppointmentDto = appointment });
         return NoContent ();
         }
 

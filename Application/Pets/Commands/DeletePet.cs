@@ -6,8 +6,10 @@ namespace Application.Pets.Commands;
 
 public class DeletePet
 {
-    public class Command : IRequest{
-        public required string Id {get; set;}
+    //TODO: Use DTOs for create, edit and delete request
+    public class Command : IRequest
+    {
+        public required string Id { get; set; }
     }
 
     public class Handler(AppDbContext context) : IRequestHandler<Command>

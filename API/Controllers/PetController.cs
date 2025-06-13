@@ -24,15 +24,15 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<string>> CreatePet(Pet pet)
+        public async Task<ActionResult<string>> CreatePet(PetDto pet)
         {
-            return await Mediator.Send(new CreatePet.Command { Pet = pet });
+            return await Mediator.Send(new CreatePet.Command { PetDto = pet });
         }
 
         [HttpPut]
-        public async Task<ActionResult> EditPet(Pet pet)
+        public async Task<ActionResult> EditPet(PetDto pet)
         {
-        await Mediator.Send(new EditPet.Command { Pet = pet });
+        await Mediator.Send(new EditPet.Command { PetDto = pet });
         return NoContent ();
         }
 

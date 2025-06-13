@@ -4,7 +4,7 @@ namespace Application.DTOs;
 
 public class TreatmentDto
 {
-    public string? Id { get; set; }
+    public string? Id { get; set; } = Guid.NewGuid().ToString();
     public int? Duration {get; set;}
     public string? Dose {get; set;}
     public string? Contraindications {get; set;}

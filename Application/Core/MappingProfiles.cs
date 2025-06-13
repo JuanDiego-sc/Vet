@@ -10,6 +10,7 @@ public class MappingProfiles : Profile
     public MappingProfiles()
     {
 
+#region Entities to DTOs
         CreateMap<Pet, PetDto>()
         .ForMember(dest => dest.Birthdate, opt => opt.MapFrom(src =>
                 src.Birthdate.Kind == DateTimeKind.Utc
@@ -21,7 +22,7 @@ public class MappingProfiles : Profile
                 src.AppointmentDate.Kind == DateTimeKind.Utc
                     ? src.AppointmentDate
                     : DateTime.SpecifyKind(src.AppointmentDate, DateTimeKind.Utc)))
-        .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.PetName));;
+        .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.PetName)); ;
 
         CreateMap<Disease, DiseaseDto>();
         CreateMap<Medicine, MedicineDto>();
@@ -30,25 +31,28 @@ public class MappingProfiles : Profile
         CreateMap<AppointmentDetail, AppointmentDetailDto>()
         .ForMember(dest => dest.DiseaseName, opt => opt.MapFrom(src => src.Disease.Name));
 
+#endregion
 
-        CreateMap<Pet, Pet>()
+
+#region DTOs to entities
+
+        CreateMap<PetDto, Pet>()
         .ForMember(dest => dest.Birthdate, opt => opt.MapFrom(src =>
-         src.Birthdate.Kind == DateTimeKind.Utc
-            ? src.Birthdate
-            : DateTime.SpecifyKind(src.Birthdate, DateTimeKind.Utc)));
+                src.Birthdate.Kind == DateTimeKind.Utc
+                    ? src.Birthdate
+                    : DateTime.SpecifyKind(src.Birthdate, DateTimeKind.Utc)));
 
-        CreateMap<MedicalAppointment, MedicalAppointment>()
+        CreateMap<MedicalAppointmentDto, MedicalAppointment>()
         .ForMember(dest => dest.AppointmentDate, opt => opt.MapFrom(src =>
         src.AppointmentDate.Kind == DateTimeKind.Utc
              ? src.AppointmentDate
              : DateTime.SpecifyKind(src.AppointmentDate, DateTimeKind.Utc)));
-
-        CreateMap<AppointmentDetail, AppointmentDetail>();
-        CreateMap<Disease, Disease>();
-        CreateMap<Medicine, Medicine>();
-        CreateMap<Treatment, Treatment>();
-        
-
-        
+             
+        CreateMap<DiseaseDto, Disease>();
+        CreateMap<MedicineDto, Medicine>();
+        CreateMap<TreatmentDto, Treatment>();
+        CreateMap<AppointmentDetailDto, AppointmentDetail>();
+#endregion
+  
     }
 }

@@ -1,4 +1,6 @@
 using System;
+using Application.DTOs;
+using AutoMapper;
 using Domain;
 using MediatR;
 using Persistence;
@@ -7,22 +9,25 @@ namespace Application.Pets.Commands;
 
 public class CreatePet
 {
+    //TODO: Use DTOs for create, edit and delete request
      public class Command : IRequest<string>
     {
-         public required Pet Pet {get; set;}
+        public required PetDto PetDto { get; set; }
     }
 
-    public class Handler(AppDbContext context) : IRequestHandler<Command, string>
+    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command, string>
     {
         public async Task<string> Handle(Command request, CancellationToken cancellationToken)
         {
-            if (request.Pet.Birthdate.Kind != DateTimeKind.Utc)
+            if (request.PetDto.Birthdate.Kind != DateTimeKind.Utc)
             {
-                request.Pet.Birthdate = DateTime.SpecifyKind(request.Pet.Birthdate, DateTimeKind.Utc);
-            } 
-           context.Pets.Add(request.Pet);
-           await context.SaveChangesAsync(cancellationToken);
-           return request.Pet.Id;
+                request.PetDto.Birthdate = DateTime.SpecifyKind(request.PetDto.Birthdate, DateTimeKind.Utc);
+            }
+
+            var pet = mapper.Map<Pet>(request.PetDto);
+            context.Pets.Add(pet);
+            await context.SaveChangesAsync(cancellationToken);
+            return pet.Id;
         }
     }
 }

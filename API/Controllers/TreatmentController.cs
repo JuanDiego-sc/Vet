@@ -24,15 +24,15 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<string>> CreateTreatment(Treatment treatment)
+        public async Task<ActionResult<string>> CreateTreatment(TreatmentDto treatment)
         {
-            return await Mediator.Send(new CreateTreatment.Command { Treatment = treatment });
+            return await Mediator.Send(new CreateTreatment.Command { TreatmentDto = treatment });
         }
 
         [HttpPut]
-        public async Task<ActionResult> EditTreatment(Treatment treatment)
+        public async Task<ActionResult> EditTreatment(TreatmentDto treatment)
         {
-        await Mediator.Send(new EditTreatment.Command { Treatment = treatment });
+        await Mediator.Send(new EditTreatment.Command { TreatmentDto = treatment });
         return NoContent ();
         }
 

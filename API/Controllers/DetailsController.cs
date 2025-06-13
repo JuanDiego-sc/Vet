@@ -26,15 +26,15 @@ public class DetailsController(AppDbContext context) : BaseApiController
     }
 
     [HttpPost]
-    public async Task<ActionResult<string>> CreateDetail(AppointmentDetail detail)
+    public async Task<ActionResult<string>> CreateDetail(AppointmentDetailDto detail)
     {
-        return await Mediator.Send(new CreateDetail.Command { AppointmentDetail = detail });
+        return await Mediator.Send(new CreateDetail.Command { AppointmentDetailDto = detail });
     }
 
     [HttpPut]
-    public async Task<ActionResult> EditDetail(AppointmentDetail detail)
+    public async Task<ActionResult> EditDetail(AppointmentDetailDto detail)
     {
-       await Mediator.Send(new EditDetail.Command { AppointmentDetail = detail });
+       await Mediator.Send(new EditDetail.Command { AppointmentDetailDto = detail });
        return NoContent ();
     }
 

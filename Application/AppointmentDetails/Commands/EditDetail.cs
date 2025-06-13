@@ -1,4 +1,5 @@
 using System;
+using Application.DTOs;
 using AutoMapper;
 using Domain;
 using MediatR;
@@ -9,7 +10,7 @@ namespace Application.AppointmentDetails.Commands;
 public class EditDetail
 {
     public class Command : IRequest{
-        public required AppointmentDetail AppointmentDetail {get; set;}
+        public required AppointmentDetailDto AppointmentDetailDto {get; set;}
     }
 
     public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command>
@@ -17,11 +18,11 @@ public class EditDetail
         public async Task Handle(Command request, CancellationToken cancellationToken)
         {
             var detail = await context.AppointmentDetails
-                .FindAsync([request.AppointmentDetail.Id], cancellationToken) 
+                .FindAsync([request.AppointmentDetailDto.Id], cancellationToken) 
              ?? 
             throw new Exception("Appointment detail not found");
 
-            mapper.Map(request.AppointmentDetail, detail); 
+            mapper.Map(request.AppointmentDetailDto, detail); 
             await context.SaveChangesAsync(cancellationToken);
         }
     }

@@ -5,8 +5,8 @@ namespace Application.DTOs;
 
 public class MedicalAppointmentDto
 {
-    public string? Id { get; set; } 
-    public DateTime? AppointmentDate {get; set;}
+    public string? Id { get; set; } = Guid.NewGuid().ToString();
+    public DateTime AppointmentDate {get; set;}
     public Status? AppointmentStatus {get; set;}
     public string? Reason {get; set;}
 
