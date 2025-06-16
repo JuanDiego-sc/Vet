@@ -1,4 +1,5 @@
 using System;
+using Application.Core;
 using Application.DTOs;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -11,13 +12,13 @@ namespace Application.Pets.Queries;
 
 public class GetPet
 {
-    public class Query : IRequest<PetDto>{
+    public class Query : IRequest<Result<PetDto>>{
         public required string Id {get; set;}
     }
 
-    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Query, PetDto>
+    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Query, Result<PetDto>>
     {
-        public async Task<PetDto> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<PetDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             var pet =
             await context.Pets
@@ -25,8 +26,9 @@ public class GetPet
             .ProjectTo<PetDto>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
-            if (pet == null) throw new Exception("Pet not found");
-            return pet;
+            if (pet == null) return Result<PetDto>.Failure("Pet not found", 404);
+            
+            return Result<PetDto>.Success(pet);
         }
     }
 }

@@ -1,5 +1,9 @@
+using API.Middleware;
 using Application.AppointmentDetails.Queries;
 using Application.Core;
+using Application.Pets.Validators;
+using FluentValidation;
+using Microsoft.CodeAnalysis.Differencing;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -17,13 +21,19 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddCors();
-builder.Services.AddMediatR(x => 
-x.RegisterServicesFromAssemblyContaining<GetDetailList.Handler>());
-builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+builder.Services.AddMediatR(x =>
+{
+    x.RegisterServicesFromAssemblyContaining<GetDetailList.Handler>();
+    x.AddOpenBehavior(typeof(ValidationBehavior<,>));
+});
 
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+builder.Services.AddValidatorsFromAssemblyContaining<CreatePetValidator>();
+builder.Services.AddTransient<ExceptionMiddleware>();
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors(x => x
     .AllowAnyMethod()
     .AllowAnyHeader()

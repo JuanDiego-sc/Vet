@@ -20,13 +20,13 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PetDto>> GetPet(string id)
         {
-            return await Mediator.Send(new GetPet.Query { Id = id });
+            return HandleResult(await Mediator.Send(new GetPet.Query { Id = id }));
         }
 
         [HttpPost]
         public async Task<ActionResult<string>> CreatePet(PetDto pet)
         {
-            return await Mediator.Send(new CreatePet.Command { PetDto = pet });
+            return HandleResult(await Mediator.Send(new CreatePet.Command { PetDto = pet }));
         }
 
         [HttpPut]

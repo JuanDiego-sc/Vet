@@ -1,4 +1,5 @@
 using System;
+using Application.Core;
 using MediatR;
 using Persistence;
 
@@ -6,23 +7,26 @@ namespace Application.Pets.Commands;
 
 public class DeletePet
 {
-    //TODO: Use DTOs for create, edit and delete request
-    public class Command : IRequest
+    public class Command : IRequest<Result<Unit>>
     {
         public required string Id { get; set; }
     }
 
-    public class Handler(AppDbContext context) : IRequestHandler<Command>
+    public class Handler(AppDbContext context) : IRequestHandler<Command, Result<Unit>>
     {
-        public async Task Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
         {
             var pet = await context.Pets
-                .FindAsync([request.Id], cancellationToken) 
-             ?? 
-            throw new Exception("Pet not found");
+                .FindAsync([request.Id], cancellationToken);
 
-            context.Remove(pet); 
-            await context.SaveChangesAsync(cancellationToken);
+            if (pet == null) return Result<Unit>.Failure("Pet not found", 404);
+
+            context.Remove(pet);
+            var result = await context.SaveChangesAsync(cancellationToken) > 0;
+
+            if (!result) return Result<Unit>.Failure("An error ocurred during delete the pet", 400);
+
+            return Result<Unit>.Success(Unit.Value);
         }
     }
 }

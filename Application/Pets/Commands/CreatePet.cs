@@ -1,4 +1,5 @@
 using System;
+using Application.Core;
 using Application.DTOs;
 using AutoMapper;
 using Domain;
@@ -9,15 +10,14 @@ namespace Application.Pets.Commands;
 
 public class CreatePet
 {
-    //TODO: Use DTOs for create, edit and delete request
-     public class Command : IRequest<string>
+     public class Command : IRequest<Result<string>>
     {
         public required PetDto PetDto { get; set; }
     }
 
-    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command, string>
+    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command, Result<string>>
     {
-        public async Task<string> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Result<string> >Handle(Command request, CancellationToken cancellationToken)
         {
             if (request.PetDto.Birthdate.Kind != DateTimeKind.Utc)
             {
@@ -26,8 +26,12 @@ public class CreatePet
 
             var pet = mapper.Map<Pet>(request.PetDto);
             context.Pets.Add(pet);
-            await context.SaveChangesAsync(cancellationToken);
-            return pet.Id;
+
+            var result = await context.SaveChangesAsync(cancellationToken) > 0;
+
+            if (!result) return Result<string>.Failure("Failure to create the pet", 400);
+            
+            return Result<string>.Success(pet.Id);
         }
     }
 }
