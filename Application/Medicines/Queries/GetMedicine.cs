@@ -1,4 +1,5 @@
 using System;
+using Application.Core;
 using Application.DTOs;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -11,21 +12,21 @@ namespace Application.Medicines.Queries;
 
 public class GetMedicine
 {
-    public class Query : IRequest<MedicineDto>{
+    public class Query : IRequest<Result<MedicineDto>>{
         public required string Id {get; set;}
     }
 
-    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Query, MedicineDto>
+    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Query, Result<MedicineDto>>
     {
-        public async Task<MedicineDto> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<MedicineDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             var medicine =
             await context.Medicines
             .ProjectTo<MedicineDto>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
-            if (medicine == null) throw new Exception("Appointment not found");
-            return medicine;
+            if (medicine == null) return Result<MedicineDto>.Failure("Medicine not found", 404);
+            return Result<MedicineDto>.Success(medicine);
         }
     }
 }

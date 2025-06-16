@@ -1,6 +1,8 @@
 using API.Middleware;
 using Application.AppointmentDetails.Queries;
 using Application.Core;
+using Application.Diseases.Validators;
+using Application.Medicines.Validators;
 using Application.Pets.Validators;
 using FluentValidation;
 using Microsoft.CodeAnalysis.Differencing;
@@ -29,6 +31,8 @@ builder.Services.AddMediatR(x =>
 
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 builder.Services.AddValidatorsFromAssemblyContaining<CreatePetValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateMedicineValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateDiseaseValidator>();
 builder.Services.AddTransient<ExceptionMiddleware>();
 
 var app = builder.Build();
