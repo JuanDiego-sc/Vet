@@ -24,13 +24,13 @@ namespace API.Controllers
         [HttpGet("{id}")]	
         public async Task<ActionResult<DiseaseDto>> GetDisease(string id)
         {
-            return await Mediator.Send(new GetDisease.Query {Id = id});
+            return HandleResult(await Mediator.Send(new GetDisease.Query {Id = id}));
         }
 
         [HttpPost]
         public async Task<ActionResult<string>> CreateDisease(DiseaseDto disease)
         {
-            return await Mediator.Send(new CreateDisease.Command { DiseaseDto = disease });
+            return HandleResult(await Mediator.Send(new CreateDisease.Command { DiseaseDto = disease }));
         }
 
         [HttpPut]
