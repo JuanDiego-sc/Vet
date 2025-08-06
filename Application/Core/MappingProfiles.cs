@@ -2,6 +2,7 @@ using System;
 using Application.DTOs;
 using AutoMapper;
 using Domain;
+using Persistence.Entities;
 
 namespace Application.Core;
 
@@ -10,7 +11,8 @@ public class MappingProfiles : Profile
     public MappingProfiles()
     {
 
-#region Entities to DTOs
+        #region Entities to DTOs
+        
         CreateMap<Pet, PetDto>()
         .ForMember(dest => dest.Birthdate, opt => opt.MapFrom(src =>
                 src.Birthdate.Kind == DateTimeKind.Utc
@@ -31,10 +33,10 @@ public class MappingProfiles : Profile
         CreateMap<AppointmentDetail, AppointmentDetailDto>()
         .ForMember(dest => dest.DiseaseName, opt => opt.MapFrom(src => src.Disease.Name));
 
-#endregion
+        #endregion
 
 
-#region DTOs to entities
+        #region DTOs to entities
 
         CreateMap<PetDto, Pet>()
         .ForMember(dest => dest.Birthdate, opt => opt.MapFrom(src =>
@@ -47,12 +49,27 @@ public class MappingProfiles : Profile
         src.AppointmentDate.Kind == DateTimeKind.Utc
              ? src.AppointmentDate
              : DateTime.SpecifyKind(src.AppointmentDate, DateTimeKind.Utc)));
-             
+
         CreateMap<DiseaseDto, Disease>();
         CreateMap<MedicineDto, Medicine>();
         CreateMap<TreatmentDto, Treatment>();
         CreateMap<AppointmentDetailDto, AppointmentDetail>();
-#endregion
-  
+        #endregion
+
+
+        #region Relationship between User & AppUser
+
+        CreateMap<User, AppUser>()
+        .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
+        .ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.Name))
+        .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
+
+        CreateMap<AppUser, User>()
+        .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.UserName))
+        .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.DisplayName))
+        .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
+
+        #endregion
+
     }
 }

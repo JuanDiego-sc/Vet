@@ -1,10 +1,12 @@
 using System;
 using Domain;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Entities;
 
 namespace Persistence;
 
-public class AppDbContext(DbContextOptions options) : DbContext(options)
+public class AppDbContext(DbContextOptions options) : IdentityDbContext<AppUser>(options)
 {
     public required DbSet<Pet> Pets {get; set;}
     public required DbSet<Medicine> Medicines {get; set;}

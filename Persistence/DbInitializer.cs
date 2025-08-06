@@ -1,12 +1,55 @@
 using Domain;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Entities;
 
 namespace Persistence;
 
 public static class DbInitializer
 {
-    public static async Task SeedData (AppDbContext context)
+    public static async Task SeedData (AppDbContext context, UserManager<AppUser> userManager)
     {
+
+         if (userManager.Users.Any())
+        {
+            return;
+        }
+
+        var users = new List<AppUser>
+        {
+            new()
+            {
+                DisplayName = "Jotade",
+                UserName = "Jotade@ppm.com",
+                Email = "Jotade@ppm.com",
+            },
+             new()
+            {
+                DisplayName = "Rene",
+                UserName = "Rene@ppm.com",
+                Email = "Rene@ppm.com",
+            },
+             new()
+            {
+                DisplayName = "Sebas",
+                UserName = "Sebas@ppm.com",
+                Email = "Sebas@ppm.com",
+            },
+             new()
+            {
+                DisplayName = "Dani",
+                UserName = "Dani@ppm.com",
+                Email = "Dani@ppm.com",
+            }
+        };
+
+        foreach (var user in users)
+        {
+            // user the userManager function to create de list of users by Identity framework
+            //! save changes is not necessary 
+            await userManager.CreateAsync(user, "Pes@j2022*");
+        }
+
         // Asegurarse de que la base de datos esté creada
         context.Database.EnsureCreated();
 

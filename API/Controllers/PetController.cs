@@ -1,8 +1,6 @@
 using Application.DTOs;
 using Application.Pets.Commands;
 using Application.Pets.Queries;
-using Domain;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Persistence;
 
@@ -12,7 +10,8 @@ namespace API.Controllers
     {
         private readonly AppDbContext context = context;
 
-         public async Task<ActionResult<List<PetDto>>> GetPetList()
+        [HttpGet]
+        public async Task<ActionResult<List<PetDto>>> GetPetList()
         {
             return await Mediator.Send(new GetPetList.Query());
         }
