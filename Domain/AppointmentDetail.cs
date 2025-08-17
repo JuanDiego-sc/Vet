@@ -16,12 +16,11 @@ public class AppointmentDetail
     public  DateTime UpdateAt { get; set; } = DateTime.UtcNow;
 
     #region Relationships 
-
     public string? IdDisease {get; set;}
-    public Disease? Disease {get; set;} = null!;
+    public Disease Disease {get; set;} = null!;
     public string? IdAppointment {get; set;}
-    public MedicalAppointment? MedicalAppointment {get; set;} = null!;
-    public ICollection<Treatment>? Treatments { get; set; } = [];
+    public MedicalAppointment MedicalAppointment {get; set;} = null!;
+    public ICollection<Treatment> Treatments { get; set; } = [];
 
     #endregion
 }

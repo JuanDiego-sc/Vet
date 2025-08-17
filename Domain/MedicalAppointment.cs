@@ -18,8 +18,8 @@ public class MedicalAppointment
     #region Relationships 
 
     public string? IdPet {get; set;}
-    public Pet? Pet {get; set;} = null!;
-    public ICollection<AppointmentDetail>? AppointmentDetails { get; set; } = [];
+    public Pet Pet {get; set;} = null!;
+    public ICollection<AppointmentDetail> AppointmentDetails { get; set; } = [];
 
     #endregion
 }

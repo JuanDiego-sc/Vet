@@ -17,7 +17,7 @@ public class Medicine
     public  DateTime UpdateAt { get; set; } = DateTime.UtcNow;
 
     #region Relationships 
-    public ICollection<Treatment>? Treatments { get; set; } = [];
+    public ICollection<Treatment> Treatments { get; set; } = [];
 
     #endregion
 }

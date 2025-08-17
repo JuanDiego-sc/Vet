@@ -19,9 +19,9 @@ public class Treatment
     #region Relationships 
 
     public string? IdMedicine {get; set;}
-    public Medicine? Medicine {get; set;} = null!;
+    public Medicine Medicine {get; set;} = null!;
     public string? IdDetail {get; set;}
-    public AppointmentDetail? AppointmentDetail {get; set;} = null!;
+    public AppointmentDetail AppointmentDetail {get; set;} = null!;
 
     #endregion
 }

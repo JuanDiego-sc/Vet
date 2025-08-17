@@ -26,7 +26,7 @@ public class Pet
     public DateTime UpdateAt { get; set; } = DateTime.UtcNow;
 
     #region Relationships
-    public ICollection<MedicalAppointment>? MedicalAppointments { get; set; } = [];
+    public ICollection<MedicalAppointment> MedicalAppointments { get; set; } = [];
     
     #endregion
 
