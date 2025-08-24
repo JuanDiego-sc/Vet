@@ -4,13 +4,13 @@ using Application.Core;
 using Application.Diseases.Validators;
 using Application.Medicines.Validators;
 using Application.Pets.Validators;
+using Domain;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using Persistence.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,7 +43,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreatePetValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateMedicineValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateDiseaseValidator>();
 builder.Services.AddTransient<ExceptionMiddleware>();
-builder.Services.AddIdentityApiEndpoints<AppUser>(options =>
+builder.Services.AddIdentityApiEndpoints<User>(options =>
 {
     options.User.RequireUniqueEmail = true;
 })
@@ -75,14 +75,14 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapGroup("api").MapIdentityApi<AppUser>();
+app.MapGroup("api").MapIdentityApi<User>();
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 try
 {
     var context = services.GetRequiredService<AppDbContext>();
-    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+    var userManager = services.GetRequiredService<UserManager<User>>();
     await context.Database.MigrateAsync();
     await DbInitializer.SeedData(context, userManager);
 }

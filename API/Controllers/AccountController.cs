@@ -1,16 +1,13 @@
-using System;
-using System.Drawing;
 using API.DTOs;
 using AutoMapper;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Persistence.Entities;
 
 namespace API.Controllers;
 
-public class AccountController(SignInManager<AppUser> signInManager, IMapper mapper) : BaseApiController
+public class AccountController(SignInManager<User> signInManager) : BaseApiController
 {
     [AllowAnonymous]
     [HttpPost("register")]
@@ -18,14 +15,12 @@ public class AccountController(SignInManager<AppUser> signInManager, IMapper map
     {
         var user = new User
         {
-            UserName = registerUserDto.Email,
+            DisplayName = registerUserDto.Name,
             Email = registerUserDto.Email,
-            Name = registerUserDto.Name,
-            Password = registerUserDto.Password
+            UserName = registerUserDto.Email
         };
 
-        var mappedUser = mapper.Map<AppUser>(user);
-        var result = await signInManager.UserManager.CreateAsync(mappedUser, registerUserDto.Password);
+        var result = await signInManager.UserManager.CreateAsync(user, registerUserDto.Password);
 
         if (result.Succeeded) return Ok();
 

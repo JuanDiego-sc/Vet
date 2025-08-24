@@ -1,14 +1,10 @@
 using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace Domain;
 
-public class User
+public class User : IdentityUser
 {
-    public string Id { get; set; } = Guid.NewGuid().ToString();
-    public required string Email { get; set; }
-    public required string Name { get; set; }
-    public required string Password { get; set; }
-    public required string UserName { get; set; }
-    public DateTime? CreateAt { get; set; } = DateTime.UtcNow;
-    public DateTime? UpdateAt { get; set; } = DateTime.UtcNow;
+    public string? DisplayName { get; set; }
+
 }

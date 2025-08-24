@@ -2,8 +2,6 @@ using System;
 using Application.DTOs;
 using AutoMapper;
 using Domain;
-using Persistence.Entities;
-
 namespace Application.Core;
 
 public class MappingProfiles : Profile
@@ -54,21 +52,6 @@ public class MappingProfiles : Profile
         CreateMap<MedicineDto, Medicine>();
         CreateMap<TreatmentDto, Treatment>();
         CreateMap<AppointmentDetailDto, AppointmentDetail>();
-        #endregion
-
-
-        #region Relationship between User & AppUser
-
-        CreateMap<User, AppUser>()
-        .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
-        .ForMember(dest => dest.DisplayName, opt => opt.MapFrom(src => src.Name))
-        .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
-
-        CreateMap<AppUser, User>()
-        .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.UserName))
-        .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.DisplayName))
-        .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
-
         #endregion
 
     }

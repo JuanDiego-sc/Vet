@@ -1,13 +1,11 @@
 using Domain;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Persistence.Entities;
 
 namespace Persistence;
 
 public static class DbInitializer
 {
-    public static async Task SeedData (AppDbContext context, UserManager<AppUser> userManager)
+    public static async Task SeedData (AppDbContext context, UserManager<User> userManager)
     {
 
          if (userManager.Users.Any())
@@ -15,7 +13,7 @@ public static class DbInitializer
             return;
         }
 
-        var users = new List<AppUser>
+        var users = new List<User>
         {
             new()
             {

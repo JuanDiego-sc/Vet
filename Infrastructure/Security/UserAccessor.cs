@@ -1,19 +1,13 @@
-using System;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using Application.Interfaces;
 using AutoMapper;
 using Domain;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Persistence;
-using Persistence.Entities;
 
 namespace Infrastructure.Security;
 
-public class UserAccessor(IHttpContextAccessor httpContextAccessor, AppDbContext context, IMapper mapper)
+public class UserAccessor(IHttpContextAccessor httpContextAccessor, AppDbContext context)
     : IUserAccessor
 {
     public string GetUserId()
@@ -21,12 +15,10 @@ public class UserAccessor(IHttpContextAccessor httpContextAccessor, AppDbContext
         return httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)
             ?? throw new Exception("User not found");
     }
-    public async Task<AppUser> GetUserAsync()
+    public async Task<User> GetUserAsync()
     {
         var user = await context.Users.FindAsync(GetUserId());
-        var mappedUser = mapper.Map<AppUser>(user);
-        
-        return mappedUser
+        return user
             ?? throw new UnauthorizedAccessException("User not logged in");
     }
 }
