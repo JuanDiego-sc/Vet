@@ -71,5 +71,11 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<User>(op
             .WithMany(ad => ad.Treatments)
             .HasForeignKey(t => t.IdDetail)
             .IsRequired();
+
+        // User - MedicalAppointment (One to Many)
+        modelBuilder.Entity<MedicalAppointment>()
+            .HasOne(ma => ma.User)
+            .WithMany(ma => ma.MedicalAppointments)
+            .HasForeignKey(u => u.IdUser);
     }
 }

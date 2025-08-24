@@ -31,8 +31,8 @@ namespace API.Controllers
         [HttpPut]
         public async Task<ActionResult> EditPet(PetDto pet)
         {
-        await Mediator.Send(new EditPet.Command { PetDto = pet });
-        return NoContent ();
+            await Mediator.Send(new EditPet.Command { PetDto = pet });
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
