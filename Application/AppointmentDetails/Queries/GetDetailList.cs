@@ -17,10 +17,6 @@ public class GetDetailList
         public async Task<List<AppointmentDetailDto>> Handle(Query request, CancellationToken cancellationToken){
 
             return await context.AppointmentDetails
-            .Include(d => d.Disease)
-            .Include(d => d.MedicalAppointment)
-            .Include(d => d.Treatments)
-                .ThenInclude(t => t.Medicine)
             .ProjectTo<AppointmentDetailDto>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
             

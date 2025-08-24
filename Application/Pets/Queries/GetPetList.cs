@@ -19,7 +19,6 @@ public class GetPetList
         {
             return await
             context.Pets
-            .Include(p => p.MedicalAppointments)
             .ProjectTo<PetDto>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
         }

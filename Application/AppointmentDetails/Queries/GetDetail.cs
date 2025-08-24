@@ -22,10 +22,6 @@ public class GetDetail
         {
             var detail =
             await context.AppointmentDetails
-            .Include(d => d.Disease)
-            .Include(d => d.MedicalAppointment)
-            .Include(d => d.Treatments)
-                .ThenInclude(t => t.Medicine)
             .ProjectTo<AppointmentDetailDto>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 

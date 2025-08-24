@@ -22,7 +22,8 @@ public class MappingProfiles : Profile
                 src.AppointmentDate.Kind == DateTimeKind.Utc
                     ? src.AppointmentDate
                     : DateTime.SpecifyKind(src.AppointmentDate, DateTimeKind.Utc)))
-        .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.PetName)); ;
+        .ForMember(dest => dest.PetName, opt => opt.MapFrom(src => src.Pet.PetName))
+        .ForMember(dest => dest.DoctorName, opt => opt.MapFrom(src => src.User.DisplayName));
 
         CreateMap<Disease, DiseaseDto>();
         CreateMap<Medicine, MedicineDto>();

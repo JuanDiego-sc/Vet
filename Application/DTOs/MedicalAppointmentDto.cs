@@ -12,6 +12,8 @@ public class MedicalAppointmentDto
 
     public string? IdPet { get; set; } 
     public string? PetName {get; set;}
+    public string? IdUser { get; set; } 
+    public string? DoctorName {get; set;}
     public ICollection<AppointmentDetailDto>? AppointmentDetails { get; set; } = [];
 
 }

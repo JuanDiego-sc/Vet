@@ -22,7 +22,6 @@ public class GetPet
         {
             var pet =
             await context.Pets
-            .Include(p => p.MedicalAppointments)
             .ProjectTo<PetDto>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 

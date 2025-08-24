@@ -19,7 +19,6 @@ public class MedicalAppointment
 
     public string? IdPet {get; set;}
     public Pet Pet {get; set;} = null!;
-
     public string? IdUser { get; set; }
     public User User { get; set; } = null!;
     public ICollection<AppointmentDetail> AppointmentDetails { get; set; } = [];

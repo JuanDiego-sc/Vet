@@ -21,8 +21,6 @@ public class GetAppointment
         {
             var appointment =
             await context.MedicalAppointments
-            .Include(a => a.Pet)
-            .Include(a => a.AppointmentDetails)
             .ProjectTo<MedicalAppointmentDto>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 

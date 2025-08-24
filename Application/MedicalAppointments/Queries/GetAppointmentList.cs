@@ -18,8 +18,6 @@ public class GetAppointmentList
         public async Task<List<MedicalAppointmentDto>> Handle(Query request, CancellationToken cancellationToken)
         {
             return await context.MedicalAppointments
-            .Include(a => a.Pet)
-            .Include(a => a.AppointmentDetails)
             .ProjectTo<MedicalAppointmentDto>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
         }
