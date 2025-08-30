@@ -6,6 +6,7 @@ using Application.Medicines.Validators;
 using Application.Pets.Validators;
 using Domain;
 using FluentValidation;
+using Infrastructure.Photos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -43,6 +44,9 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreatePetValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateMedicineValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateDiseaseValidator>();
 builder.Services.AddTransient<ExceptionMiddleware>();
+builder.Services.Configure<CloudinarySettings>(builder.Configuration
+.GetSection("CloudinaryCredentials"));
+
 builder.Services.AddIdentityApiEndpoints<User>(options =>
 {
     options.User.RequireUniqueEmail = true;
