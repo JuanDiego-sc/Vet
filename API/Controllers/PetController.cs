@@ -1,6 +1,8 @@
 using Application.DTOs;
 using Application.Pets.Commands;
 using Application.Pets.Queries;
+using Domain;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Persistence;
 
@@ -40,6 +42,19 @@ namespace API.Controllers
         {
             await Mediator.Send(new DeletePet.Command { Id = id });
             return Ok();
+        }
+
+        [HttpPost("{petId}/add-photo")]
+        public async Task<ActionResult<Photo>> AddPhoto(IFormFile file, string petId)
+        {
+            return HandleResult(await Mediator.Send(
+                new AddPhoto.Command { File = file, PetId = petId }));
+        }
+
+        [HttpDelete("{photoId}/photos")]
+        public async Task<ActionResult<Unit>> DeletePhoto(string photoId)
+        {
+            return HandleResult(await Mediator.Send(new DeletePhoto.Command { PhotoId = photoId }));
         }
     }
 }

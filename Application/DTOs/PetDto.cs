@@ -9,6 +9,7 @@ public class PetDto
     public string? Breed { get; set; }
     public string? Species { get; set; }
     public string? Gender { get; set; }
+    public string? ImageUrl {get ; set;}
     public DateTime Birthdate { get; set; }
 
     public ICollection<MedicalAppointmentDto>? MedicalAppointments { get; set; } = [];

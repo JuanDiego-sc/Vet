@@ -12,6 +12,7 @@ public class AppDbContext(DbContextOptions options) : IdentityDbContext<User>(op
     public required DbSet<MedicalAppointment> MedicalAppointments {get; set;}
     public required DbSet<Treatment> Treatments {get; set;}
     public required DbSet<AppointmentDetail> AppointmentDetails {get; set;}
+    public required DbSet<Photo> Photos {get; set;}
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

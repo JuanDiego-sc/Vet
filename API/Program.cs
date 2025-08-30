@@ -2,11 +2,13 @@ using API.Middleware;
 using Application.AppointmentDetails.Queries;
 using Application.Core;
 using Application.Diseases.Validators;
+using Application.Interfaces;
 using Application.Medicines.Validators;
 using Application.Pets.Validators;
 using Domain;
 using FluentValidation;
 using Infrastructure.Photos;
+using Infrastructure.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -39,6 +41,8 @@ builder.Services.AddMediatR(x =>
     x.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
 
+builder.Services.AddScoped<IUserAccessor, UserAccessor>();
+builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 builder.Services.AddValidatorsFromAssemblyContaining<CreatePetValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateMedicineValidator>();

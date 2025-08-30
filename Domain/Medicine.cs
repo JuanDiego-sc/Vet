@@ -13,7 +13,8 @@ public class Medicine
     public required int Stock { get; set; }
     [SpecialCharactersValidation]
     public required string Description { get; set; }
-    public  DateTime CreateAt { get; set; } = DateTime.UtcNow;
+    public string? ImageUrl { get; set; }
+    public DateTime CreateAt { get; set; } = DateTime.UtcNow;
     public  DateTime UpdateAt { get; set; } = DateTime.UtcNow;
 
     #region Relationships 

@@ -22,6 +22,7 @@ public class Pet
     public required string Gender { get; set; }
 
     public DateTime Birthdate { get; set; }
+    public string? ImageUrl { get; set; }
     public DateTime CreateAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdateAt { get; set; } = DateTime.UtcNow;
 
