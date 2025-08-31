@@ -24,7 +24,14 @@ public class DeletePhoto
 
             if (photo == null) return Result<Unit>.Failure("Failed to find the photo in DB", 400);
 
+            var pet = dbContext.Pets.FirstOrDefault(x => x.ImageUrl == photo.Url);
+
+            if (pet == null) return Result<Unit>.Failure("The entity does not have an image", 400);
+
             await photoService.DeletePhoto(photo.PublicId);
+            dbContext.Photos.Remove(photo);
+            pet.ImageUrl = null;
+
 
             var result = await dbContext.SaveChangesAsync(cancellationToken) > 0;
     

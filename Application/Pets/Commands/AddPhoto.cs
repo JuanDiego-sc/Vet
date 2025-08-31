@@ -16,6 +16,7 @@ public class AddPhoto
         public required IFormFile File { get; set; }
     }
 
+    //TODO: If the photo already exist, delete the prev photo and replace with the newest 
     public class Handler(AppDbContext dbContext, IPhotoService photoService)
         : IRequestHandler<Command, Result<Photo>>
     {
@@ -38,9 +39,9 @@ public class AddPhoto
 
             var result = await dbContext.SaveChangesAsync(cancellationToken) > 0;
 
-             return result
-                ? Result<Photo>.Success(photo)
-                : Result<Photo>.Failure("Problem saving photo on DB", 400);
+            return result
+               ? Result<Photo>.Success(photo)
+               : Result<Photo>.Failure("Problem saving photo on DB", 400);
         }
     }
 }
