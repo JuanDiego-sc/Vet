@@ -13,7 +13,7 @@ namespace API.Controllers
         private readonly AppDbContext context = context;
 
 
-        [HttpGet]	
+        [HttpGet]
         //Good practice to use async/await for database queries
         public async Task<ActionResult<List<MedicineDto>>> GetMedicineList()
         {
@@ -35,8 +35,8 @@ namespace API.Controllers
         [HttpPut]
         public async Task<ActionResult> EditMedicine(MedicineDto medicine)
         {
-        await Mediator.Send(new EditMedicine.Command { MedicineDto = medicine });
-        return NoContent ();
+            await Mediator.Send(new EditMedicine.Command { MedicineDto = medicine });
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
@@ -45,5 +45,13 @@ namespace API.Controllers
             await Mediator.Send(new DeleteMedicine.Command { Id = id });
             return Ok();
         }
+        
+        [HttpPost("{medicineId}/add-photo")]
+        public async Task<ActionResult<Photo>> AddPhoto(IFormFile file, string medicineId)
+        {
+            return HandleResult(await Mediator.Send(
+                new AddPhoto.Command { File = file, MedicineId = medicineId }));
+        }
+
     }
 }
