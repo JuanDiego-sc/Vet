@@ -16,7 +16,6 @@ public class AddPhoto
         public required IFormFile File { get; set; }
     }
 
-    //TODO: If the photo already exist, delete the prev photo and replace with the newest 
     public class Handler(AppDbContext dbContext, IPhotoService photoService)
         : IRequestHandler<Command, Result<Photo>>
     {
@@ -25,22 +24,30 @@ public class AddPhoto
             var pet = dbContext.Pets.FirstOrDefault(x => x.Id == request.PetId);
 
             if (pet == null) return Result<Photo>.Failure("Failed to find the entity in DB", 400);
+            
+            var photo = dbContext.Photos.FirstOrDefault(x => x.Url == pet.ImageUrl);
+
+            if (photo != null)
+            {
+                await photoService.DeletePhoto(photo.PublicId);
+                pet.ImageUrl = null;
+            }
 
             var uploadResult = await photoService.UploadPhoto(request.File);
 
-            var photo = new Photo
+            var newPhoto = new Photo
             {
                 PublicId = uploadResult.PublicId,
                 Url = uploadResult.Url
             };
 
             pet.ImageUrl = uploadResult.Url;
-            dbContext.Photos.Add(photo);
+            dbContext.Photos.Add(newPhoto);
 
             var result = await dbContext.SaveChangesAsync(cancellationToken) > 0;
 
             return result
-               ? Result<Photo>.Success(photo)
+               ? Result<Photo>.Success(newPhoto)
                : Result<Photo>.Failure("Problem saving photo on DB", 400);
         }
     }
