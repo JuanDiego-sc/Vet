@@ -1,4 +1,5 @@
 using API.Middleware;
+using API.SignalR;
 using Application.AppointmentDetails.Queries;
 using Application.Core;
 using Application.Diseases.Validators;
@@ -35,6 +36,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddCors();
+builder.Services.AddSignalR();
 builder.Services.AddMediatR(x =>
 {
     x.RegisterServicesFromAssemblyContaining<GetDetailList.Handler>();
@@ -63,6 +65,12 @@ builder.Services.AddAuthentication(options =>
     options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
 });
 
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("SignalRUser", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+    });
+
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
@@ -84,6 +92,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapGroup("api").MapIdentityApi<User>();
+app.MapHub<BlogHub>("/chat")
+    .RequireAuthorization("SignalRUser");
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

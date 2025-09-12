@@ -10,7 +10,7 @@ public class MappingProfiles : Profile
     {
 
         #region Entities to DTOs
-        
+
         CreateMap<Pet, PetDto>()
         .ForMember(dest => dest.Birthdate, opt => opt.MapFrom(src =>
                 src.Birthdate.Kind == DateTimeKind.Utc
@@ -31,6 +31,14 @@ public class MappingProfiles : Profile
         .ForMember(dest => dest.MedicineName, opt => opt.MapFrom(src => src.Medicine.Name));
         CreateMap<AppointmentDetail, AppointmentDetailDto>()
         .ForMember(dest => dest.DiseaseName, opt => opt.MapFrom(src => src.Disease.Name));
+
+        CreateMap<Message, MessageDto>()
+        .ForMember(dest => dest.UserId, opt => opt.MapFrom(src =>
+            src.User.Id))
+        .ForMember(dest => dest.UserName, opt => opt.MapFrom(src =>
+            src.User.DisplayName))
+        .ForMember(dest => dest.UserPhoto, opt => opt.MapFrom(src =>
+            src.User.ImageUrl));
 
         #endregion
 
@@ -54,6 +62,7 @@ public class MappingProfiles : Profile
         CreateMap<TreatmentDto, Treatment>();
         CreateMap<AppointmentDetailDto, AppointmentDetail>();
         #endregion
+        
 
     }
 }
